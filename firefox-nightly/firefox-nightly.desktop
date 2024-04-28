@@ -1,0 +1,29 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox Nightly
+GenericName=Web Browser
+Comment=Browse the Web
+Exec=/home/your-username-here/.local/share/firefox-nightly/firefox %u
+Icon=/home/your-username-here/.local/share/firefox-nightly/browser/chrome/icons/default/default128.png
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=firefox-nightly
+Categories=Network;WebBrowser;
+Keywords=web;browser;internet;
+Actions=new-window;new-private-window;profile-manager;
+X-Desktop-File-Install-Version=0.26
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/home/your-username-here/.local/share/firefox-nightly/firefox --new-window %u
+
+[Desktop Action new-private-window]
+Name=New Private Window
+Exec=/home/your-username-here/.local/share/firefox-nightly/firefox --private-window %u
+
+[Desktop Action profile-manager]
+Name=Profile Manager
+Exec=/home/your-username-here/.local/share/firefox-nightly/firefox -P %u
+
