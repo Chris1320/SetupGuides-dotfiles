@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Which information to display.
+# NOTE: If 'ascii' will be used, it must come first.
+# Default: first example below
+# Valid: space separated string
+#
+# OFF by default: shell editor wm de palette
+# PF_INFO="ascii title os host kernel uptime pkgs memory"
+export PF_INFO="ascii title os host kernel uptime memory pkgs shell editor wm palette"
+
+# Show/Hide Package Manager names (like neofetch)
+# Default: off
+# Valid: on, off
+# Example:
+# on:   '1748 (rpm), 11 (flatpak)'
+# off:  '1759'
+export PF_PACKAGE_MANAGERS=on
