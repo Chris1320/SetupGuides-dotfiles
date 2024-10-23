@@ -1,0 +1,51 @@
+[user]
+	name = <YOUR_GIT_USERNAME>
+	email = <YOUR_GIT_EMAIL>
+	signingkey = <YOUR_GIT_GPG_SIGNING_KEY>
+[core]
+	editor = nvim
+	untrackedcache = true
+	fsmonitor = true
+[init]
+	defaultbranch = main
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg
+[alias]
+	l = log --graph --branches --oneline
+	ll = log --graph --branches
+	s = status
+	ss = status --ignored
+	dl = diff
+	dls = diff --staged
+    dw = diff --word-diff
+    dws = diff --word-diff --staged
+	a = add
+	c = commit --signoff
+	p = pull
+	pp = push
+	ppp = push --force-with-lease
+	ck = checkout
+	m = merge
+	b = branch
+	w = stash list --oneline
+	ws = stash show --include-untracked
+	wip = stash push --message
+	wipp = stash push --all --message
+	wp = stash pop
+	wb = stash branch
+	wd = stash drop
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[fetch]
+	writeCommitGraph = true
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
