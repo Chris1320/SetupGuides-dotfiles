@@ -17,10 +17,10 @@
 	ll = log --graph --branches
 	s = status
 	ss = status --ignored
-	dl = diff
-	dls = diff --staged
+	d = diff
+	dd = diff --staged
     dw = diff --word-diff
-    dws = diff --word-diff --staged
+    ddw = diff --word-diff --staged
 	a = add
 	c = commit --signoff
 	p = pull
