@@ -19,8 +19,8 @@
 	ss = status --ignored
 	d = diff
 	dd = diff --staged
-    dw = diff --word-diff
-    ddw = diff --word-diff --staged
+	dw = diff --word-diff
+	ddw = diff --word-diff --staged
 	a = add
 	c = commit --signoff
 	p = pull
