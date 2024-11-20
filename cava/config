@@ -17,7 +17,7 @@ sleep_timer = 5
 [input]
 method = pipewire
 # Change this to the output you want to use:
-source = alsa:pcm:1:front:1:playback
+source = auto
 
 [output]
 # Output method. Can be 'ncurses', 'noncurses', 'raw' or 'sdl'.
