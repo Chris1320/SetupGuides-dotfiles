@@ -5,6 +5,20 @@
 [manager]
 
 prepend_keymap = [
+    # Start a shell in the current directory
+    { on = "!", run = 'shell "$SHELL" --block --confirm', desc = "Open shell here" },
+
+    # Preview pane navigation
+    { on = "<C-Up>", run = "seek -1", desc = "Seek up in the preview" },
+    { on = "<C-Down>", run = "seek 1", desc = "Seek down in the preview" },
+    { on = "<S-Up>", run = "seek -5", desc = "Seek up 5 units in the preview" },
+    { on = "<S-Down>", run = "seek 5", desc = "Seek down 5 units in the preview" },
+
+    # Smart enter
+    { on = "l", run = 'plugin --sync smart-enter', desc = "Enter the child directory, or open the file" },
+    { on = "<Right>", run = 'plugin --sync smart-enter', desc = "Enter the child directory, or open the file" },
+    { on = "<Enter>", run = 'plugin --sync smart-enter', desc = "Enter the child directory, or open the file" },
+
     # Goto
     { on = [
         "g",
@@ -14,4 +28,81 @@ prepend_keymap = [
         "g",
         "t",
     ], run = "cd ~/Temp", desc = "Go to the temp directory" },
+    { on = [
+        "g",
+        'r',
+    ], run = '''
+        shell 'ya pub dds-cd --str "$(git rev-parse --show-toplevel)"' --confirm
+        ''', desc = "Go to the root directory of the git repository" },
+
+    # Relative motions
+    { on = "1", run = "plugin relative-motions --args=1", desc = "Move in relative steps" },
+    { on = "2", run = "plugin relative-motions --args=2", desc = "Move in relative steps" },
+    { on = "3", run = "plugin relative-motions --args=3", desc = "Move in relative steps" },
+    { on = "4", run = "plugin relative-motions --args=4", desc = "Move in relative steps" },
+    { on = "5", run = "plugin relative-motions --args=5", desc = "Move in relative steps" },
+    { on = "6", run = "plugin relative-motions --args=6", desc = "Move in relative steps" },
+    { on = "7", run = "plugin relative-motions --args=7", desc = "Move in relative steps" },
+    { on = "8", run = "plugin relative-motions --args=8", desc = "Move in relative steps" },
+    { on = "9", run = "plugin relative-motions --args=9", desc = "Move in relative steps" },
+
+    # Change selected files/directories' permissions
+    { on = [
+        "c",
+        "m",
+    ], run = "plugin chmod", desc = "Chmod on selected files" },
+
+    # Ouch compression
+    { on = [
+        "C",
+        "z",
+    ], run = "plugin ouch --args=zip", desc = "Compress to ZIP with ouch" },
+    { on = [
+        "C",
+        "t",
+    ], run = "plugin ouch --args=tar", desc = "Compress to TAR with ouch" },
+
+    # archivemount
+    { on = [
+        "M",
+        "a",
+    ], run = "plugin archivemount --args=mount", desc = "Mount selected archive" },
+    { on = [
+        "M",
+        "u",
+    ], run = "plugin archivemount --args=unmount", desc = "Unmount and save changes to original archive" },
+
+    # yamb
+    { on = [
+        "u",
+        "a",
+    ], run = "plugin yamb --args=save", desc = "Add bookmark" },
+    { on = [
+        "u",
+        "g",
+    ], run = "plugin yamb --args=jump_by_key", desc = "Jump bookmark by key" },
+    { on = [
+        "u",
+        "G",
+    ], run = "plugin yamb --args=jump_by_fzf", desc = "Jump bookmark by fzf" },
+    { on = [
+        "u",
+        "d",
+    ], run = "plugin yamb --args=delete_by_key", desc = "Delete bookmark by key" },
+    { on = [
+        "u",
+        "D",
+    ], run = "plugin yamb --args=delete_by_fzf", desc = "Delete bookmark by fzf" },
+    { on = [
+        "u",
+        "A",
+    ], run = "plugin yamb --args=delete_all", desc = "Delete all bookmarks" },
+    { on = [
+        "u",
+        "r",
+    ], run = "plugin yamb --args=rename_by_key", desc = "Rename bookmark by key" },
+    { on = [
+        "u",
+        "R",
+    ], run = "plugin yamb --args=rename_by_fzf", desc = "Rename bookmark by fzf" },
 ]
