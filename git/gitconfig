@@ -38,8 +38,6 @@
 	wd = stash drop
 [rerere]
 	enabled = true
-[column]
-	ui = auto
 [branch]
 	sort = -committerdate
 [fetch]
