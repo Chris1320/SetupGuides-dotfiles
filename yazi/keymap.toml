@@ -22,6 +22,12 @@ prepend_keymap = [
     # Goto
     { on = [
         "g",
+        "m",
+    ], run = '''
+        shell 'ya pub dds-cd --str "/run/media/$(whoami)"' --confirm
+        ''', desc = "Go to mounted filesystems" },
+    { on = [
+        "g",
         "p",
     ], run = "cd ~/Projects", desc = "Go to the projects directory" },
     { on = [
