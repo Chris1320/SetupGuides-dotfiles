@@ -1,3 +1,4 @@
+---
 gui:
   showFileTree: false
   theme:
@@ -30,3 +31,10 @@ git:
   parseEmoji: true
   commit:
     signOff: true
+
+customCommands:
+  - key: "l"
+    context: commits
+    command: git log --graph --branches --oneline
+    subprocess: true
+    description: "Show repository commit network"
