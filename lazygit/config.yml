@@ -37,4 +37,9 @@ customCommands:
     context: commits
     command: git log --graph --branches --oneline
     subprocess: true
-    description: "Show repository commit network"
+    description: "Show repository commit network (oneline)"
+  - key: "L"
+    context: commits
+    command: git log --graph --branches
+    subprocess: true
+    description: "Show repository commit network (verbose)"
