@@ -27,12 +27,15 @@
 	pp = push
 	ppp = push --force-with-lease
 	ck = checkout
+	sw = switch
+	swc = switch --create
 	m = merge
 	b = branch
 	w = stash list --oneline
 	ws = stash show --include-untracked
 	wip = stash push --message
 	wipp = stash push --all --message
+	wa = stash apply
 	wp = stash pop
 	wb = stash branch
 	wd = stash drop
@@ -47,3 +50,7 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[credential "https://git.chrisfromnowhere.me"]
+	provider = generic
+[credential "helperselector"]
+	selected = manager
