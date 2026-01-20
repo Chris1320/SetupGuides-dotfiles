@@ -15,6 +15,7 @@
 [alias]
 	l = log --graph --branches --oneline
 	ll = log --graph --branches
+	ls = log --graph --branches --oneline --pretty=format:'%Cred%h%Creset (%Cblue%an%Creset, %Cgreen%cr%Creset) %s' --abbrev-commit
 	ltoday = log --graph --branches --oneline --pretty=format:'%Cred%h%Creset (%Cblue%an%Creset, %Cgreen%cr%Creset) %s' --abbrev-commit --since='1 day ago'
 	l3days = log --graph --branches --oneline --pretty=format:'%Cred%h%Creset (%Cblue%an%Creset, %Cgreen%cr%Creset) %s' --abbrev-commit --since='3 days ago'
 	lweek = log --graph --branches --oneline --pretty=format:'%Cred%h%Creset (%Cblue%an%Creset, %Cgreen%cr%Creset) %s' --abbrev-commit --since='7 days ago'
