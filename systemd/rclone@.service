@@ -1,0 +1,22 @@
+[Unit]
+Description=Rclone Mount for %i
+After=network-online.target
+
+[Service]
+Type=notify
+# Automatically create the folder in ~/Cloud if it doesn't exist
+ExecStartPre=/usr/bin/mkdir -p %h/Cloud/%i
+ExecStart=/usr/bin/rclone mount %i: %h/Cloud/%i \
+    --vfs-cache-mode full \
+    --vfs-read-chunk-size 32M \
+    --vfs-read-chunk-size-limit off \
+    --drive-chunk-size 64M \
+    --dir-cache-time 1h \
+    --log-level INFO
+# Safely unmount when the service stops
+ExecStop=/bin/fusermount -u %h/Cloud/%i
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
