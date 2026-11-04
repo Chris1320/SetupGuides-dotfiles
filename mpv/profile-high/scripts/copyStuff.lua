@@ -1,35 +1,59 @@
-require 'mp'
-require 'mp.msg'
+require("mp")
+require("mp.msg")
 
 -- Copy:
--- Filename or URL
--- Full Filename Path
--- Current Video Time
--- Current Video Duration
--- Current Displayed Subtitle
--- Video Metadata
+-- Filename or URL              (CTRL+f)
+-- Full Filename Path           (CTRL+p)
+-- Video Title                  (CTRL+T)
+-- Current Video Time           (CTRL+t)
+-- Current Video Duration       (CTRL+d)
+-- Current Displayed Subtitle   (CTRL+s)
+-- Video Metadata               (CTRL+m)
 
 WINDOWS = 2
 UNIX = 3
 
 local function platform_type()
-    local utils = require 'mp.utils'
+    local utils = require("mp.utils")
     local workdir = utils.to_string(mp.get_property_native("working-directory"))
-    if string.find(workdir, "\\") then
+    mp.msg.debug(string.format("The workdir is: %s", workdir))
+
+    -- Support drive letter and UNC path for windows.
+    if string.match(workdir, '^"%a:\\') or string.match(workdir, '^"\\\\') then
+        mp.msg.debug("The platform is windows")
         return WINDOWS
     else
+        mp.msg.debug("The platform is unix")
         return UNIX
     end
 end
 
 local function command_exists(cmd)
-    local pipe = io.popen("type " .. cmd .. " > /dev/null 2> /dev/null; printf \"$?\"", "r")
+    local pipe = io.popen("type " .. cmd .. ' > /dev/null 2> /dev/null; printf "$?"', "r")
     exists = pipe:read() == "0"
     pipe:close()
     return exists
 end
 
 local function get_clipboard_cmd()
+    -- attempt to decide by current session's type
+    -- The environment variable is not a Freedesktop standard, but a Systemd one. For possible values see `man 8 pam_systemd`
+    local session_type = os.getenv("XDG_SESSION_TYPE")
+    if session_type == "wayland" then
+        if command_exists("wl-copy") then
+            return "wl-copy"
+        else
+            mp.msg.error("MPV is running in a wayland environment, but suitable command was not found")
+        end
+    elseif session_type == "x11" then
+        if command_exists("xclip") then
+            return "xclip -silent -in -selection clipboard"
+        else
+            mp.msg.error("MPV is running in an X11 environment, but suitable command was not found")
+        end
+    end
+
+    -- fallback to whatever is available
     if command_exists("xclip") then
         return "xclip -silent -in -selection clipboard"
     elseif command_exists("wl-copy") then
@@ -42,15 +66,11 @@ local function get_clipboard_cmd()
     end
 end
 
-local function divmod(a, b)
-    return a / b, a % b
-end
-
 local function set_clipboard(text)
     if platform == WINDOWS then
-        mp.commandv("run", "powershell", "set-clipboard", table.concat({'"', text, '"'}))
+        mp.commandv("run", "powershell", "set-clipboard", table.concat({ '"', text, '"' }))
         return true
-    elseif (platform == UNIX and clipboard_cmd) then
+    elseif platform == UNIX and clipboard_cmd then
         local pipe = io.popen(clipboard_cmd, "w")
         pipe:write(text)
         pipe:close()
@@ -63,16 +83,22 @@ end
 
 -- Copy Time
 local function copyTime()
-    local time_pos = mp.get_property_number("time-pos")
-    local minutes, remainder = divmod(time_pos, 60)
-    local hours, minutes = divmod(minutes, 60)
-    local seconds = math.floor(remainder)
-    local milliseconds = math.floor((remainder - seconds) * 1000)
-    local time = string.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds)
+    local time = mp.get_property_osd("time-pos/full")
+
     if set_clipboard(time) then
         mp.osd_message(string.format("Time Copied to Clipboard: %s", time))
     else
         mp.osd_message("Failed to copy time to clipboard")
+    end
+end
+
+-- Copy Title
+local function copyTitle()
+    local title = string.format("%s", mp.get_property_osd("media-title"))
+    if set_clipboard(title) then
+        mp.osd_message(string.format("Title Copied to Clipboard: %s", title))
+    else
+        mp.osd_message("Failed to copy title to clipboard")
     end
 end
 
@@ -101,11 +127,7 @@ end
 
 -- Copy Full Filename Path
 local function copyFullPath()
-    if platform == WINDOWS then
-        full_path = string.format("%s\\%s", mp.get_property_osd("working-directory"), mp.get_property_osd("path"))
-    else
-        full_path = string.format("%s/%s", mp.get_property_osd("working-directory"), mp.get_property_osd("path"))
-    end
+    local full_path = mp.get_property_osd("path")
 
     if set_clipboard(full_path) then
         mp.osd_message(string.format("Full Filename Path Copied to Clipboard: %s", full_path))
@@ -159,6 +181,7 @@ end
 
 -- Key-Bindings
 mp.add_key_binding("Ctrl+t", "copyTime", copyTime)
+mp.add_key_binding("Ctrl+T", "copyTitle", copyTitle)
 mp.add_key_binding("Ctrl+f", "copyFilename", copyFilename)
 mp.add_key_binding("Ctrl+p", "copyFullPath", copyFullPath)
 mp.add_key_binding("Ctrl+s", "copySubtitle", copySubtitle)
